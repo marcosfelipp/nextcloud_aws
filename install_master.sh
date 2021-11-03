@@ -1,12 +1,16 @@
-# Install postgresql
-sudo apt-get install -y wget ca-certificates
-wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
-sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt/ 'lsb_release -cs'-pgdg main" >> /etc/apt/sources.list.d/pgdg.list'
-sudo apt-get update
-sudo apt-get install -y postgresql postgresql-contrib
+sudo apt update
+sudo apt install -y nginx
+sudo apt install -y php7.4 php7.4-fpm php7.4-common php7.4-pgsql php7.4-cli php7.4-gd php7.4-json php7.4-curl php7.4-zip php7.4-xml php7.4-mbstring php7.4-bz2 php7.4-intl php7.4-bcmath php7.4-gmp php-imagick php7.4-opcache
+sudo apt install -y certbot python3-certbot-nginx
+sudo apt install -y postgresql postgresql-contrib
+sudo apt install -y unzip
+wget https://download.nextcloud.com/server/releases/nextcloud-20.0.5.zip
+sudo unzip nextcloud-20.0.5.zip -d /usr/share/nginx/
 
-# Install nextcloud
-sudo snap install nextcloud
+sudo chown www-data:www-data /usr/share/nginx/nextcloud/ -R
+sudo mkdir /usr/share/nginx/nextcloud-data
+sudo chown www-data:www-data /usr/share/nginx/nextcloud-data -R
 
-# Install php
-sudo apt-get -y install php-fpm php-cli php-json php-curl php-imap php-gd php-pgsql php-xml php-zip php-intl php-mcrypt php-imagick php-mbstring unzip
+sudo cp ~/nextcloud.conf /etc/nginx/conf.d/nextcloud.conf
+
+sudo -u postgres psql -f database.sql

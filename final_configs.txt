@@ -1,0 +1,14 @@
+sudo nano /etc/nginx/nginx.conf
+add server_names_hash_bucket_size 128;
+sudo service nginx restart
+
+sudo nano /etc/nginx/conf.d/nextcloud.conf
+
+sudo systemctl enable --now nginx
+sudo systemctl enable --now php7.4-fpm
+
+sudo service nginx restart
+
+sudo docker swarm init
+sudo docker network create --opt encrypted --driver overlay --attachable data-network
+docker container run -dit — network my-overlay-network — name container3 nginx:alpine

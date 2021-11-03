@@ -37,30 +37,24 @@
   become: True
   gather_facts: True
   tasks:
-  - name: Transfer executable script
+  - name: Transfer docker install script
     copy: src=prepare_env.sh dest=~ mode=0777
-    when: master_node is defined
 
-  - name: Execute the script
+  - name: Execute the script to install docker
     command: sh ~/prepare_env.sh
+
+  - name: Transfer install master script
+    copy: src=install_master.sh dest=~ mode=0777
     when: master_node is defined
 
-
-  - name: Transfer executable script
-    copy: src=prepare_env.sh dest=~ mode=0777
+  - name: Transfer database configuration
+    copy: src=database.sql dest=~ mode=0777
     when: master_node is defined
 
-  - name: Execute the script
-    command: sh ~/prepare_env.sh
+  - name: Transfer nextcloud config
+    copy: src=nextcloud.conf dest=~ mode=0777
     when: master_node is defined
 
-# - name: Terminate instances
-#   hosts: localhost
-#   tasks:
-#     - name: Terminate instances that were previously launched
-#       ec2:
-#         state: 'absent'
-#         region: '{{ region }}'
-#         aws_access_key: "{{ ec2_access_key }}"
-#         aws_secret_key: "{{ ec2_secret_key }}"
-#         instance_ids: '{{ ec2.instance_ids }}'
+  - name: Execute the install master script
+    command: sh ~/install_master.sh
+    when: master_node is defined
