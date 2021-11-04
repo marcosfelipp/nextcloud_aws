@@ -1,4 +1,4 @@
-# test_devops_zg
+# Run Nextcloud as container on AWS
 Pratical test of infra and DevOps
 
 ![alt text](doc/zg_arch.png "Archtecture")
